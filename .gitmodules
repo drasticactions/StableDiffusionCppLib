@@ -1,0 +1,3 @@
+[submodule "external/stable-diffusion.cpp"]
+	path = external/stable-diffusion.cpp
+	url = git@github.com:leejet/stable-diffusion.cpp.git

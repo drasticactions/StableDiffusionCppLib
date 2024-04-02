@@ -1,0 +1,72 @@
+<Project>
+    <PropertyGroup>
+        <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Windows'))">WINDOWS</DefineConstants>
+		<DefineConstants Condition="$([MSBuild]::IsOSPlatform('Linux'))">LINUX</DefineConstants>
+		<DefineConstants Condition="$([MSBuild]::IsOSPlatform('OSX'))">MACOS</DefineConstants>
+		<IsWindows>$([MSBuild]::IsOSPlatform('Windows'))</IsWindows>
+		<IsLinux>$([MSBuild]::IsOSPlatform('Linux'))</IsLinux>
+		<IsOSX>$([MSBuild]::IsOSPlatform('OSX'))</IsOSX>
+        <NativeLibraries>OFF</NativeLibraries>
+    </PropertyGroup>
+    <ItemGroup>
+		<AdditionalFiles Include="$(MSBuildThisFileDirectory)stylecop.json" Link="stylecop.json" />
+	</ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="StyleCop.Analyzers">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <Target Name="CMakePrepareForBuild" BeforeTargets="PrepareForBuild;Clean" Condition="'$(NativeLibraries)'!='OFF'">
+		<PropertyGroup Condition="$(IsWindows)">
+			<Test>$(VsInstallRoot)</Test>
+			<CMakeBin Condition="Exists('$(Test)')">"$(VsInstallRoot)\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe"</CMakeBin>
+			<CMakeBin Condition="!Exists('$(Test)')">"$([System.IO.Path]::GetFullPath('$(VS170COMNTOOLS)\..\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe'))"</CMakeBin>
+		</PropertyGroup>
+		<PropertyGroup Condition="!$(IsWindows)">
+			<CMakeBin>cmake</CMakeBin>
+		</PropertyGroup>
+		<PropertyGroup>
+			<CMakeProject>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\external\stable-diffusion.cpp'))</CMakeProject>
+		</PropertyGroup>
+	</Target>
+
+	<Target Name="CMakeConfigure" BeforeTargets="Build" Condition="'$(NativeLibraries)'!='OFF'">
+		<PropertyGroup>
+			<CMakeCompilerFlags Condition="$(IsWindows)">-DCMAKE_CXX_FLAGS="/W0 /EHsc /w /D _MBCS" -DCMAKE_C_FLAGS="/W0 /w"</CMakeCompilerFlags>
+			<CMakeCompilerFlags Condition="$(IsLinux)">-DCMAKE_CXX_FLAGS=-w -DCMAKE_C_FLAGS=-w</CMakeCompilerFlags>
+			<CMakeOptions Condition="$(IsWindows)"></CMakeOptions>
+			<CMakeOptions Condition="$(IsOSX)">-DCMAKE_OSX_ARCHITECTURES="arm64;x86_64"</CMakeOptions>
+			<CMakeOptions Condition="!$(IsLinux)"></CMakeOptions>
+		</PropertyGroup>
+		<Exec Command='$(CMakeBin) -DBUILD_SHARED_LIBS=ON -DSD_BUILD_SHARED_LIBS=ON -DSD_STANDALONE=OFF -DSD_BUILD_EXAMPLES=OFF $(CMakeOptions) -S "$(CMakeProject)" -B "$(CMakeProject)" $(CMakeCompilerFlags)' />
+	</Target>
+
+	<Target Name="CMakeBuild" AfterTargets="CMakeConfigure" Condition="'$(NativeLibraries)'!='OFF'">
+		<Exec Command='$(CMakeBin) --build "$(CMakeProject)" -j8 --config $(Configuration)' />
+	</Target>
+
+	<Target Name="CMakeCopyOutput" AfterTargets="CMakeBuild" Condition="'$(NativeLibraries)'!='OFF'">
+		<PropertyGroup>
+			<LibraryFileExtension Condition="$(IsWindows)">stable-diffusion.dll</LibraryFileExtension>
+			<LibraryFileExtension Condition="$(IsLinux)">libstable-diffusion.so</LibraryFileExtension>
+            <LibraryFileExtension Condition="$(IsOSX)">libstable-diffusion.dylib</LibraryFileExtension>
+		</PropertyGroup>
+		<ItemGroup>
+			<LibraryFiles Condition="$(IsWindows)" Include="$(CMakeProject)/bin/$(Configuration)/$(LibraryFileExtension)" />	
+			<LibraryFiles Condition="!$(IsWindows)" Include="$(CMakeProject)/bin/$(LibraryFileExtension)" />
+		</ItemGroup>
+		<Copy SourceFiles="@(LibraryFiles)" DestinationFolder="$(OutputPath)" />
+	</Target>
+
+    <Target Name="CMakeMetalCopyOutput" AfterTargets="CMakeBuild" Condition="'$(NativeLibraries)'!='OFF'">
+		<PropertyGroup>
+			<LibraryFileExtension Condition="$(IsOSX)">*.metal</LibraryFileExtension>
+		</PropertyGroup>
+		<ItemGroup>
+			<LibraryFiles Include="$(CMakeProject)/bin/$(LibraryFileExtension)" />
+		</ItemGroup>
+		<Copy Condition="$(IsOSX)" SourceFiles="@(LibraryFiles)" DestinationFolder="$(OutputPath)" />
+	</Target>
+</Project>

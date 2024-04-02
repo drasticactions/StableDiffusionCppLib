@@ -1,0 +1,27 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageVersion Include="DotMake.CommandLine" Version="1.8.0" />
+    <PackageVersion Include="Downloader" Version="3.0.6" />
+    <PackageVersion Include="Drastic.Utilities" Version="1.0.10" />
+    <PackageVersion Include="LibVLCSharp" Version="3.8.2" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
+    <PackageVersion Include="Spectre.Console" Version="0.48.1-preview.0.37" />
+    <PackageVersion Include="StbImageSharp" Version="2.27.13" />
+    <PackageVersion Include="StbImageWriteSharp" Version="1.16.7" />
+    <PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.435" />
+    <PackageVersion Include="Microsoft.WindowsAppSDK" Version="1.5.240311000" />
+    <PackageVersion Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.3233" />
+    <PackageVersion Include="Xabe.FFmpeg" Version="5.2.6" />
+    <PackageVersion Include="MSTest" Version="3.2.0" />
+    <PackageVersion Include="WinUIEx" Version="2.3.4" />
+    <PackageVersion Include="Microsoft.Testing.Extensions.CodeCoverage" Version="17.10.1" />
+    <!-- <PackageVersion Include="" Version=""/> -->
+  </ItemGroup>
+</Project>
