@@ -59,6 +59,14 @@ internal static unsafe class NativeUtilities
 
         return (str.Length * 4) + 1;
     }
+
+    public static unsafe void FreePointer(byte* ptr)
+    {
+        if (ptr != null)
+        {
+            Marshal.FreeHGlobal((IntPtr)ptr);
+        }
+    }
 }
 
 public enum SdLogLevel

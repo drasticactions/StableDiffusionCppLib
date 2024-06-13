@@ -13,11 +13,11 @@ public static class Logger
 
         if (level <= SdLogLevel.SdLogDebug)
         {
-            Console.Out.WriteLine(message);
+            Console.Out.Write(message);
         }
         else
         {
-            Console.Error.WriteLine(message);
+            Console.Error.Write(message);
         }
     }
 }
