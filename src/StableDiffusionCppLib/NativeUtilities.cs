@@ -1,3 +1,7 @@
+// <copyright file="NativeUtilities.cs" company="Drastic Actions">
+// Copyright (c) Drastic Actions. All rights reserved.
+// </copyright>
+
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -21,7 +25,7 @@ internal static unsafe class NativeUtilities
 
         return buffer;
     }
-    
+
     public static string to_string(byte *s, bool freePtr = false)
     {
         if (s == null)
@@ -71,7 +75,7 @@ public enum SdType
     SdTypeF16 = 1,
     SdTypeQ40 = 2,
     SdTypeQ41 = 3,
-    // Skipped removed types as they do not have values in the enum
+
     SdTypeQ50 = 6,
     SdTypeQ51 = 7,
     SdTypeQ80 = 8,

@@ -215,7 +215,7 @@ namespace StableDiffusionCppLib
         public static extern sd_image_t* txt2img(sd_ctx_t* sd_ctx, byte* prompt, byte* negative_prompt, int clip_skip, float cfg_scale, int width, int height, uint sample_method, int sample_steps, long seed, int batch_count, sd_image_t* control_cond, float control_strength, float style_strength, [MarshalAs(UnmanagedType.U1)] bool normalize_input, byte* input_id_images_path);
 
         [DllImport(__DllName, EntryPoint = "img2img", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern sd_image_t* img2img(sd_ctx_t* sd_ctx, sd_image_t init_image, byte* prompt, byte* negative_prompt, int clip_skip, float cfg_scale, int width, int height, uint sample_method, int sample_steps, float strength, long seed, int batch_count);
+        public static extern sd_image_t* img2img(sd_ctx_t* sd_ctx, sd_image_t init_image, byte* prompt, byte* negative_prompt, int clip_skip, float cfg_scale, int width, int height, uint sample_method, int sample_steps, float strength, long seed, int batch_count, sd_image_t* control_cond, float control_strength, float style_strength, [MarshalAs(UnmanagedType.U1)] bool normalize_input, byte* input_id_images_path);
 
         [DllImport(__DllName, EntryPoint = "img2vid", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern sd_image_t* img2vid(sd_ctx_t* sd_ctx, sd_image_t init_image, int width, int height, int video_frames, int motion_bucket_id, int fps, float augmentation_level, float min_cfg, float cfg_scale, uint sample_method, int sample_steps, float strength, long seed);
