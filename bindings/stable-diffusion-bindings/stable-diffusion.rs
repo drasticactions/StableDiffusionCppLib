@@ -148,6 +148,7 @@ pub const __MAC_14_1: u32 = 140100;
 pub const __MAC_14_2: u32 = 140200;
 pub const __MAC_14_3: u32 = 140300;
 pub const __MAC_14_4: u32 = 140400;
+pub const __MAC_14_5: u32 = 140500;
 pub const __IPHONE_2_0: u32 = 20000;
 pub const __IPHONE_2_1: u32 = 20100;
 pub const __IPHONE_2_2: u32 = 20200;
@@ -226,6 +227,7 @@ pub const __IPHONE_17_1: u32 = 170100;
 pub const __IPHONE_17_2: u32 = 170200;
 pub const __IPHONE_17_3: u32 = 170300;
 pub const __IPHONE_17_4: u32 = 170400;
+pub const __IPHONE_17_5: u32 = 170500;
 pub const __WATCHOS_1_0: u32 = 10000;
 pub const __WATCHOS_2_0: u32 = 20000;
 pub const __WATCHOS_2_1: u32 = 20100;
@@ -272,6 +274,7 @@ pub const __WATCHOS_10_1: u32 = 100100;
 pub const __WATCHOS_10_2: u32 = 100200;
 pub const __WATCHOS_10_3: u32 = 100300;
 pub const __WATCHOS_10_4: u32 = 100400;
+pub const __WATCHOS_10_5: u32 = 100500;
 pub const __TVOS_9_0: u32 = 90000;
 pub const __TVOS_9_1: u32 = 90100;
 pub const __TVOS_9_2: u32 = 90200;
@@ -319,6 +322,7 @@ pub const __TVOS_17_1: u32 = 170100;
 pub const __TVOS_17_2: u32 = 170200;
 pub const __TVOS_17_3: u32 = 170300;
 pub const __TVOS_17_4: u32 = 170400;
+pub const __TVOS_17_5: u32 = 170500;
 pub const __BRIDGEOS_2_0: u32 = 20000;
 pub const __BRIDGEOS_3_0: u32 = 30000;
 pub const __BRIDGEOS_3_1: u32 = 30100;
@@ -344,6 +348,7 @@ pub const __BRIDGEOS_8_1: u32 = 80100;
 pub const __BRIDGEOS_8_2: u32 = 80200;
 pub const __BRIDGEOS_8_3: u32 = 80300;
 pub const __BRIDGEOS_8_4: u32 = 80400;
+pub const __BRIDGEOS_8_5: u32 = 80500;
 pub const __DRIVERKIT_19_0: u32 = 190000;
 pub const __DRIVERKIT_20_0: u32 = 200000;
 pub const __DRIVERKIT_21_0: u32 = 210000;
@@ -356,8 +361,10 @@ pub const __DRIVERKIT_23_1: u32 = 230100;
 pub const __DRIVERKIT_23_2: u32 = 230200;
 pub const __DRIVERKIT_23_3: u32 = 230300;
 pub const __DRIVERKIT_23_4: u32 = 230400;
+pub const __DRIVERKIT_23_5: u32 = 230500;
 pub const __VISIONOS_1_0: u32 = 10000;
 pub const __VISIONOS_1_1: u32 = 10100;
+pub const __VISIONOS_1_2: u32 = 10200;
 pub const MAC_OS_X_VERSION_10_0: u32 = 1000;
 pub const MAC_OS_X_VERSION_10_1: u32 = 1010;
 pub const MAC_OS_X_VERSION_10_2: u32 = 1020;
@@ -418,7 +425,8 @@ pub const MAC_OS_VERSION_14_1: u32 = 140100;
 pub const MAC_OS_VERSION_14_2: u32 = 140200;
 pub const MAC_OS_VERSION_14_3: u32 = 140300;
 pub const MAC_OS_VERSION_14_4: u32 = 140400;
-pub const __MAC_OS_X_VERSION_MAX_ALLOWED: u32 = 140400;
+pub const MAC_OS_VERSION_14_5: u32 = 140500;
+pub const __MAC_OS_X_VERSION_MAX_ALLOWED: u32 = 140500;
 pub const __ENABLE_LEGACY_MAC_AVAILABILITY: u32 = 1;
 pub const _USE_FORTIFY_LEVEL: u32 = 2;
 pub const __HAS_FIXED_CHK_PROTOTYPES: u32 = 1;
@@ -1349,7 +1357,8 @@ pub type sample_method_t = ::std::os::raw::c_uint;
 pub const schedule_t_DEFAULT: schedule_t = 0;
 pub const schedule_t_DISCRETE: schedule_t = 1;
 pub const schedule_t_KARRAS: schedule_t = 2;
-pub const schedule_t_N_SCHEDULES: schedule_t = 3;
+pub const schedule_t_AYS: schedule_t = 3;
+pub const schedule_t_N_SCHEDULES: schedule_t = 4;
 pub type schedule_t = ::std::os::raw::c_uint;
 pub const sd_type_t_SD_TYPE_F32: sd_type_t = 0;
 pub const sd_type_t_SD_TYPE_F16: sd_type_t = 1;
@@ -1376,7 +1385,11 @@ pub const sd_type_t_SD_TYPE_IQ4_XS: sd_type_t = 23;
 pub const sd_type_t_SD_TYPE_I8: sd_type_t = 24;
 pub const sd_type_t_SD_TYPE_I16: sd_type_t = 25;
 pub const sd_type_t_SD_TYPE_I32: sd_type_t = 26;
-pub const sd_type_t_SD_TYPE_COUNT: sd_type_t = 27;
+pub const sd_type_t_SD_TYPE_I64: sd_type_t = 27;
+pub const sd_type_t_SD_TYPE_F64: sd_type_t = 28;
+pub const sd_type_t_SD_TYPE_IQ1_M: sd_type_t = 29;
+pub const sd_type_t_SD_TYPE_BF16: sd_type_t = 30;
+pub const sd_type_t_SD_TYPE_COUNT: sd_type_t = 31;
 pub type sd_type_t = ::std::os::raw::c_uint;
 extern "C" {
     pub fn sd_type_name(type_: sd_type_t) -> *const ::std::os::raw::c_char;
@@ -1540,6 +1553,11 @@ extern "C" {
         strength: f32,
         seed: i64,
         batch_count: ::std::os::raw::c_int,
+        control_cond: *const sd_image_t,
+        control_strength: f32,
+        style_strength: f32,
+        normalize_input: bool,
+        input_id_images_path: *const ::std::os::raw::c_char,
     ) -> *mut sd_image_t;
 }
 extern "C" {

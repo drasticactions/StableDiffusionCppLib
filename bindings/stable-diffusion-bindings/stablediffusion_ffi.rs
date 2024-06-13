@@ -902,7 +902,12 @@ pub unsafe extern "C" fn csbindgen_img2img(
     sample_steps: c_int,
     strength: f32,
     seed: i64,
-    batch_count: c_int
+    batch_count: c_int,
+    control_cond: *const sd_image_t,
+    control_strength: f32,
+    style_strength: f32,
+    normalize_input: bool,
+    input_id_images_path: *const c_char
 ) -> *mut sd_image_t
 {
     img2img(
@@ -918,7 +923,12 @@ pub unsafe extern "C" fn csbindgen_img2img(
         sample_steps,
         strength,
         seed,
-        batch_count
+        batch_count,
+        control_cond,
+        control_strength,
+        style_strength,
+        normalize_input,
+        input_id_images_path
     )
 }
 
